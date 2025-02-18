@@ -37,11 +37,18 @@ mongoose
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    // if name doesn't enter then it can throught the error
+    required: [true, "Name is required"],
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: [true, "Name is required"],
+    unique: [true, "this email is already exist"],
   },
   age: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 const User = mongoose.model("user", UserSchema);
