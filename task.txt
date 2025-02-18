@@ -1,0 +1,20 @@
+users
+
+CRUD
+C -create -> post
+R - read -> get
+U -> update -> put/patch
+D -> delete -> delete
+
+get /users -> get all users -> done
+get /users/1 -> get user having id 1 -> done
+dynamic path 
+id -> variable
+
+post /users -> create new user
+
+patch /users/:id -> update user with id 1
+dynamic path 
+id -> variable
+
+delete /users/1 -> delete user with id 1
