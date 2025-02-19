@@ -74,7 +74,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.status(500).json({
     status: "Error",
-    message: err.message || "smething erong",
+    message: err.message || "something erong",
   });
 });
 // get all users
