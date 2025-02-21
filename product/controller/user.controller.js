@@ -1,5 +1,7 @@
 // const User = require("../models/iser.model.js");
 
+const { customError } = require("../middleware/custom.error.handler");
+
 exports.getAllUser = () => {
   async (req, res) => {
     try {
@@ -50,17 +52,18 @@ exports.createUser = () => {
 };
 
 exports.getuserById = () => {
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const userId = req.params.id;
 
       const user = await User.findById(userId);
 
       if (!user) {
-        return res.status(404).json({
-          status: "Not found",
-          message: "product not found",
-        });
+        // return res.status(404).json({
+        //   status: "Not found",
+        //   message: "product not found",
+        // });
+        throw new customError("product not found", 404);
       }
 
       return res.status(200).json({
@@ -70,18 +73,22 @@ exports.getuserById = () => {
         data: user,
       });
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        status: "error",
-        message: error.message ?? "Something went wrong",
-        data: null,
-      });
+      // return res.status(500).json({
+      //   success: false,
+      //   status: "error",
+      //   message: error.message ?? "Something went wrong",
+      //   data: null,
+      // });
+      next(error);
     }
   };
 };
 
+const catchAsyncHandler = (fn) => {
+  // fn();
+};
 exports.updateUser = () => {
-  async (req, res) => {
+  catchAsyncHandler(async (req, res, next) => {
     try {
       const id = req.params.id;
 
@@ -90,10 +97,11 @@ exports.updateUser = () => {
       const updatedUser = await User.findByIdAndUpdate(id, body, { new: true });
 
       if (!updatedUser) {
-        return res.status(404).json({
-          status: "Fail",
-          message: "product not found.",
-        });
+        // return res.status(404).json({
+        //   status: "Fail",
+        //   message: "product not found.",
+        // });
+        throw new customError("product not found", 404);
       }
 
       return res.status(201).json({
@@ -102,14 +110,15 @@ exports.updateUser = () => {
         data: updatedUser,
       });
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        status: "error",
-        message: error.message ?? "Something went wrong",
-        data: null,
-      });
+      // return res.status(500).json({
+      // success: false,
+      // status: "error",
+      // message: error.message ?? "Something went wrong",
+      // data: null,
+      // });
+      next(error);
     }
-  };
+  });
 };
 
 exports.deleteUser = () => {
